@@ -24,7 +24,7 @@ your-local-media-folder/
         └── track2.png (or .jpg)
 ```
 
-> ⚠️**Important:** If your track is named `Lname.mp3`, the corresponding cover image in the exact same album directory under `covers/` must be named strictly `name.png` or `name.jpg`. The Python Flask backend automatically strips the extension to match and display the song title and image in real-time.
+> **Important:** If your track is named `name.mp3`, the corresponding cover image in the exact same album directory under `covers/` must be named strictly `name.png` or `name.jpg`. The Python Flask backend automatically strips the extension to match and display the song title and image in real-time.
 
 ---
 
