@@ -36,7 +36,7 @@ You do not need Python, virtual environments, or system dependencies installed o
 
 ### 1. Clone this repository
 ```bash
-git clone https://github.com
+git clone https://github.com/BallOrInternet/my-soundcloud-player.git
 cd my-soundcloud-player
 ```
 
