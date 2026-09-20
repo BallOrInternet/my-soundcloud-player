@@ -1,10 +1,36 @@
-# 🎧 My SoundCloud Player (Dockerized)
+#  My SoundCloud Player (Dockerized)
 
-A simple Python Flask media player application. This repository demonstrates core DevOps practices: Docker containerization, proper workspace multi-stage/volume handling, and cross-platform architecture isolation.
+A simple Python Flask media player application. This repository demonstrates core DevOps practices: Docker containerization, proper workspace volume handling, and cross-platform architecture isolation.
 
-## 🚀 How to Run Anywhere (Linux, Windows, Mac)
+##  Screenshots
 
-You don't need Python, virtual environments, or system dependencies installed on your machine. You only need **Docker**.
+<!-- After pushing your screenshots to the repository, you can display them here -->
+<!-- ![App Screenshot 1](screenshot1.png) -->
+<!-- ![App Screenshot 2](screenshot2.png) -->
+
+##  Required Media Structure
+
+To avoid any confusion and ensure the application correctly pairs audio files with their respective artwork, your local media directories **must** follow this strict structural layout before mounting:
+
+```text
+your-local-media-folder/
+├── music/
+│   └── [Album_Name]/               <-- This folder name becomes the Playlist title on the site
+│       ├── track1.mp3              <-- The file name (without extension) becomes the Song title
+│       └── track2.mp3
+└── covers/
+    └── [Album_Name]/               <-- MUST strictly match the folder name in music/
+        ├── track1.png (or .jpg)    <-- MUST strictly match the filename of the .mp3
+        └── track2.png (or .jpg)
+```
+
+> ⚠️ **Important:** If your track is named `LSD.mp3`, the corresponding cover image in the exact same album directory under `covers/` must be named strictly `LSD.png` or `LSD.jpg`. The Python Flask backend automatically strips the extension to match and display the song title and image in real-time.
+
+---
+
+##  How to Run Anywhere (Linux, Windows, Mac)
+
+You do not need Python, virtual environments, or system dependencies installed on your machine. You only need **Docker**.
 
 ### 1. Clone this repository
 ```bash
@@ -17,8 +43,8 @@ cd my-soundcloud-player
 docker build -t my-soundcloud-app .
 ```
 
-### 3. Run the Container with your own Music & Covers
-To stream your personal music tracks and see covers, mount your local directories into the container using **Docker Volumes**.
+### 3. Run the Container
+Mount your local `music` and `covers` folders (structured as shown above) into the container using **Docker Volumes**.
 
 **For Linux / macOS:**
 ```bash
