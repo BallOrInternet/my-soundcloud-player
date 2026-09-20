@@ -1,5 +1,7 @@
 #  My SoundCloud Player (Dockerized)
 
+![Uploading image.png…]()
+
 A simple Python Flask media player application. This repository demonstrates core DevOps practices: Docker containerization, proper workspace volume handling, and cross-platform architecture isolation.
 
 ##  Screenshots
