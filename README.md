@@ -60,7 +60,7 @@ docker run -d -p 5000:5000 \
 **For Windows (PowerShell):**
 ```powershell
 docker run -d -p 5000:5000 `
-  -v "\${PWD}/music:/app/music" `
+  -v "${PWD}/music:/app/music" `
   -v "${PWD}/covers:/app/covers" `
   --name soundcloud my-soundcloud-app
 ```
