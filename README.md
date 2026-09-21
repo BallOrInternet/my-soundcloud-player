@@ -1,10 +1,11 @@
 #  My SoundCloud Player (Dockerized)
 
-<img width="2509" height="1208" alt="image" src="https://github.com/user-attachments/assets/bc6ade11-6274-4ceb-bc6d-a1ad093341dd" />
-
 A simple Python Flask media player application. This repository demonstrates core DevOps practices: Docker containerization, proper workspace volume handling, and cross-platform architecture isolation.
 
 ##  Screenshots
+
+<img width="2509" height="1208" alt="image" src="https://github.com/user-attachments/assets/bc6ade11-6274-4ceb-bc6d-a1ad093341dd" />
+
 
 <!-- After pushing your screenshots to the repository, you can display them here -->
 <!-- ![App Screenshot 1](screenshot1.png) -->
