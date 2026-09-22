@@ -41,28 +41,12 @@ git clone https://github.com/BallOrInternet/my-soundcloud-player.git
 cd my-soundcloud-player
 ```
 
-### 2. Build the Isolated Docker Image
-```bash
-docker build -t my-soundcloud-app .
-```
-
-### 3. Run the Container
+### 2. Run the Container
 Mount your local `music` and `covers` folders (structured as shown above) into the container using **Docker Volumes**.
 
-**For Linux / macOS:**
-```bash
-docker run -d -p 5000:5000 \
-  -v "\$(pwd)/music:/app/music" \
-  -v "\$(pwd)/covers:/app/covers" \
-  --name soundcloud my-soundcloud-app
+For Linux / macOS / Windows:
 ```
-
-**For Windows (PowerShell):**
-```powershell
-docker run -d -p 5000:5000 `
-  -v "C:\path\to\your\music:/app/music" `
-  -v "C:\path\to\your\covers:/app/covers" `
-  --name soundcloud my-soundcloud-app
+docker compose up -d --build
 ```
 
 Now open your web browser and navigate to: **http://localhost:5000**
