@@ -1,55 +1,46 @@
-#  My SoundCloud Player (Dockerized)
-
-A simple Python Flask media player application. This repository demonstrates core DevOps practices: Docker containerization, proper workspace volume handling, and cross-platform architecture isolation.
-
-##  Screenshots
-
+# 🎧 My SoundCloud Player (Multi-Container Production Setup)
 <img width="2509" height="1208" alt="image" src="https://github.com/user-attachments/assets/bc6ade11-6274-4ceb-bc6d-a1ad093341dd" />
 
+A production-ready Python Flask media player application utilizing a multi-container architecture orchestrated via Docker Compose.
 
-<!-- After pushing your screenshots to the repository, you can display them here -->
-<!-- ![App Screenshot 1](screenshot1.png) -->
-<!-- ![App Screenshot 2](screenshot2.png) -->
+## 🏗️ Architecture Blueprint
+- **Frontend/Backend:** Python 3.11 (Flask) web application container.
+- **Database:** PostgreSQL 15 (Alpine-based) container for high-speed metadata caching.
+- **Network:** Isolated virtual network bridging application and database together.
 
-##  Required Media Structure
+## 📂 Required Media Structure
 
-To avoid any confusion and ensure the application correctly pairs audio files with their respective artwork, your local media directories **must** follow this strict structural layout before mounting:
+Local media directories must follow a strict layout before mounting so the backend can pair audio files with artwork:
 
-```text
 your-local-media-folder/
 ├── music/
-│   └── [Album_Name]/               <-- This folder name becomes the Playlist title on the site
-│       ├── track1.mp3              <-- The file name (without extension) becomes the Song title
+│   └── [Album_Name]/               <-- Playlist title on the site
+│       ├── track1.mp3              <-- Song title (without extension)
 │       └── track2.mp3
 └── covers/
-    └── [Album_Name]/               <-- MUST strictly match the folder name in music/
-        ├── track1.png (or .jpg)    <-- MUST strictly match the filename of the .mp3
+    └── [Album_Name]/               <-- MUST match folder name in music/
+        ├── track1.png (or .jpg)    <-- MUST match .mp3 filename
         └── track2.png (or .jpg)
-```
 
-> **Important:** If your track is named `name.mp3`, the corresponding cover image in the exact same album directory under `covers/` must be named strictly `name.png` or `name.jpg`. The Python Flask backend automatically strips the extension to match and display the song title and image in real-time.
+## 🚀 How to Run Anywhere (Linux, Windows, Mac)
 
----
-
-##  How to Run Anywhere (Linux, Windows, Mac)
-
-You do not need Python, virtual environments, or system dependencies installed on your machine. You only need **Docker**.
+Using **Docker Compose**, the environment setup is identical for **Linux, Windows, and macOS**:
 
 ### 1. Clone this repository
 ```bash
-git clone https://github.com/BallOrInternet/my-soundcloud-player.git
+git clone https://github.com
 cd my-soundcloud-player
 ```
 
-### 2. Run the Container
-Mount your local `music` and `covers` folders (structured as shown above) into the container using **Docker Volumes**.
-
-For Linux / macOS / Windows:
-```
+### 2. Launch the Ecosystem (App + Database)
+```bash
 docker compose up -d --build
 ```
+Open your browser at: **http://localhost:5000**
 
-Now open your web browser and navigate to: **http://localhost:5000**
+## 📊 Management Commands
+- **Check container ecosystem status:** `docker compose ps`
+- **View application logs:** `docker compose logs sound_player`
+- **View database logs:** `docker compose logs db`
+- **Stop and remove containers smoothly:** `docker compose down`
 
----
-*Note: This application is a mockup stub used for infrastructure deployment training purposes.*
