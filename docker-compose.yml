@@ -1,22 +1,32 @@
-version: '3.8'
-
 services:
   sound_player:
-    # 1. Говорим Docker собрать образ из текущей папки (где лежит Dockerfile)
     build: .
-    
-    # 2. Даем контейнеру понятное имя
     container_name: soundcloud-app
-    
-    # 3. Пробрасываем порты (внешний:внутренний)
     ports:
       - "5000:5000"
-    
-    # 4. Монтируем папки для музыки и обложек (Магия: точка "." везде означает текущую папку!)
     volumes:
       - ./music:/app/music
       - ./covers:/app/covers
-    
-    # 5. Политика перезапуска: если сайт упадет от ошибки, Docker сам поднимет его
+    # Говорим плееру не запускаться, пока база данных не оживет
+    depends_on:
+      - db
     restart: unless-stopped
+
+  db:
+    # Официальный готовый образ базы данных из Docker Hub
+    image: postgres:15-alpine
+    container_name: soundcloud-db
+    # Задаем пароли и имя базы через переменные окружения
+    environment:
+      POSTGRES_USER: uropbrako
+      POSTGRES_PASSWORD: my_super_secret_password
+      POSTGRES_DB: soundcloud_metadata
+    # Выделяем базе личный изолированный "жесткий диск" внутри докера
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+# Объявляем наш именованный том для хранения данных БД
+volumes:
+  pgdata:
 
