@@ -13,6 +13,7 @@ A production-ready Python Flask media player application utilizing a multi-conta
 Local media directories must follow a strict layout before mounting so the backend can pair audio files with artwork:
 
 your-local-media-folder/
+```
 ├── music/
 │   └── [Album_Name]/               <-- Playlist title on the site
 │       ├── track1.mp3              <-- Song title (without extension)
@@ -20,6 +21,8 @@ your-local-media-folder/
 └── covers/
     └── [Album_Name]/               <-- MUST match folder name in music/
         ├── track1.png (or .jpg)    <-- MUST match .mp3 filename
+        └── track2.png (or .jpg)
+```
         └── track2.png (or .jpg)
 
 ##  How to Run Anywhere (Linux, Windows, Mac)
