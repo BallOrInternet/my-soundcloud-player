@@ -22,8 +22,8 @@ your-local-media-folder/
     └── [Album_Name]/               <-- MUST match folder name in music/
         ├── track1.png (or .jpg)    <-- MUST match .mp3 filename
         └── track2.png (or .jpg)
-```
         └── track2.png (or .jpg)
+```
 
 ##  How to Run Anywhere (Linux, Windows, Mac)
 
