@@ -4,3 +4,5 @@
 **/*.png
 __pycache__/
 nohup.out
+backups/
+arch-archiver.sh
