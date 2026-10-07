@@ -1,17 +1,12 @@
-# 1. Берем официальный готовый образ с установленным Python
-FROM python:3.11-slim
+FROM python:3.11-alpine
 
-# 2. Создаем внутри контейнера рабочую папку для нашего кода
 WORKDIR /app
 
-# 3. Копируем файл со списком библиотек внутрь контейнера
-COPY requirements.txt .
+RUN apk add --no-cache gcc musl-dev postgresql-dev libffi-dev
 
-# 4. Устанавливаем зависимости прямо в контейнер (виртуальное окружение тут НЕ нужно!)
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Копируем оставшийся код нашего приложения в контейнер
 COPY . .
 
-# 6. Указываем команду, которая автоматически запустится при старте контейнера
 CMD ["python", "app.py"]

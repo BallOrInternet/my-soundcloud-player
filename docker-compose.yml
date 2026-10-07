@@ -7,26 +7,21 @@ services:
     volumes:
       - ./music:/app/music
       - ./covers:/app/covers
-    # Говорим плееру не запускаться, пока база данных не оживет
     depends_on:
       - db
     restart: unless-stopped
 
   db:
-    # Официальный готовый образ базы данных из Docker Hub
     image: postgres:15-alpine
     container_name: soundcloud-db
-    # Задаем пароли и имя базы через переменные окружения
     environment:
       POSTGRES_USER: uropbrako
       POSTGRES_PASSWORD: my_super_secret_password
       POSTGRES_DB: soundcloud_metadata
-    # Выделяем базе личный изолированный "жесткий диск" внутри докера
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
 
-# Объявляем наш именованный том для хранения данных БД
 volumes:
   pgdata:
 

@@ -4,7 +4,7 @@
 A production-ready Python Flask media player application utilizing a multi-container architecture orchestrated via Docker Compose.
 
 ##  Architecture Blueprint
-- **Frontend/Backend:** Python 3.11 (Flask) web application container.
+- **Frontend/Backend:** Python 3.11 (Flask, alpine-based) web application container.
 - **Database:** PostgreSQL 15 (Alpine-based) container for high-speed metadata caching.
 - **Network:** Isolated virtual network bridging application and database together.
 

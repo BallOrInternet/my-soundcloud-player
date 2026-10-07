@@ -167,10 +167,9 @@ function updateMediaSession(track) {
     }
 }
 
-async function loadTrack(track) {
-    if (!track) {
-        return;
-    }
+
+async function loadTrack(track, startTime = 0) {
+    if (!track) return;
 
     tracks.forEach(item => item.classList.remove("active"));
     track.classList.add("active");
@@ -182,12 +181,19 @@ async function loadTrack(track) {
     audio.src = track.dataset.src;
     audio.muted = false;
 
-    try {
-        await audio.play();
-    } catch (error) {
-        console.error("Ошибка воспроизведения:", error);
+    if (startTime > 0) {
+        audio.dataset.pendingStartTime = startTime;
+        currentTimeText.textContent = formatTime(startTime);
+    } else {
+        try {
+            await audio.play();
+            startSaveProgressTimer();
+        } catch (error) {
+            console.error("Ошибка воспроизведения:", error);
+        }
     }
 }
+
 
 function playNextTrack() {
     if (!currentTrack) {
@@ -275,17 +281,30 @@ playerCover.addEventListener("click", () => {
 });
 
 playButton.addEventListener("click", () => {
-    if (!currentTrack) {
-        return;
-    }
-
+    if (!currentTrack) return;
     if (audio.paused) {
-        audio.play().catch(error => {
+        const pendingTime = parseFloat(audio.dataset.pendingStartTime);
+        
+        // 1. Сначала принудительно запускаем сам аудиопоток
+        audio.play().then(() => {
+            startSaveProgressTimer();
+            
+            // 2. Хакерский таймаут: ждем 50мс, пока браузер инициализирует трек
+            if (pendingTime > 0) {
+                setTimeout(() => {
+                    audio.currentTime = pendingTime;
+                    if (progressBar) {
+                        progressBar.value = pendingTime;
+                    }
+                    // Снимаем щит, возвращая ползунок к жизни
+                    delete audio.dataset.pendingStartTime;
+                }, 50);
+            }
+        }).catch(error => {
             console.error("Ошибка воспроизведения:", error);
         });
-    } else {
-        audio.pause();
     }
+
 });
 
 previousButton.addEventListener("click", playPreviousTrack);
@@ -344,6 +363,7 @@ audio.addEventListener("loadedmetadata", () => {
 });
 
 audio.addEventListener("timeupdate", () => {
+    if (audio.dataset.pendingStartTime) return
     currentTimeText.textContent = formatTime(audio.currentTime);
     durationText.textContent = formatTime(audio.duration);
 
@@ -403,3 +423,56 @@ if ("mediaSession" in navigator) {
 }
 
 updateView();
+
+let saveProgressInterval = null;
+
+function startSaveProgressTimer() {
+    // Очищаем старый таймер, если он был запущен
+    if (saveProgressInterval) clearInterval(saveProgressInterval);
+
+    saveProgressInterval = setInterval(() => {
+        saveCurrentPosition();
+    }, 3000);
+}
+
+function stopSaveProgressTimer() {
+    if (saveProgressInterval) {
+        clearInterval(saveProgressInterval);
+        saveProgressInterval = null;
+    }
+    saveCurrentPosition();
+}
+
+function saveCurrentPosition() {
+    const audio = document.getElementById('audio');
+    if (!audio || audio.paused || !audio.currentSrc) return;
+
+    const audioUrl = new URL(audio.currentSrc);
+    const audioPath = audioUrl.pathname;
+    const currentPosition = audio.currentTime;
+
+    fetch('/api/save_progress', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            audio_path: audioPath,
+            position: currentPosition
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Прогресс сохранен в PostgreSQL:', currentPosition);
+    })
+    .catch(error => console.error('Ошибка сохранения прогресса:', error));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const lastPlayedTrackButton = document.querySelector('.track[data-last-played="true"]');
+    if (lastPlayedTrackButton) {
+        const savedPosition = parseFloat(lastPlayedTrackButton.getAttribute('data-position')) || 0.0;
+        console.log(`=== СЕССИЯ ПОДГОТОВЛЕНА: Ждем клика по PLAY для старта с ${savedPosition} сек. ===`);
+        loadTrack(lastPlayedTrackButton, savedPosition);
+    }
+});

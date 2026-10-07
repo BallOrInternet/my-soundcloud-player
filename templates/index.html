@@ -16,14 +16,14 @@
     <input
         id="search"
         type="text"
-        placeholder="Поиск музыки..."
+        placeholder="find music..."
         autocomplete="off"
     >
 </header>
 
 <div id="library-view" class="page-layout">
     <aside class="sidebar">
-        <h3>Альбомы</h3>
+        <h3>Album</h3>
 
         <div class="album-list">
             {% for playlist_name, songs in playlists.items() %}
@@ -73,7 +73,9 @@
                         data-title="{{ song.title }}"
                         data-cover="{{ song.cover_url or '' }}"
                         data-playlist="{{ playlist_name }}"
+                        data-last-played="{{ 'true' if song.is_last_played else 'false' }}"
                     >
+
                         <div class="track-art">
                             {% if song.cover_url %}
                             <img
@@ -106,7 +108,7 @@
         <svg viewBox="0 0 24 24" class="small-icon" aria-hidden="true">
             <path d="M15 5l-7 7 7 7"/>
         </svg>
-        Назад
+        back
     </button>
 
     <div class="now-playing-content">
@@ -132,7 +134,7 @@
         </div>
 
         <div class="now-playing-meta">
-            <h2 id="now-playing-title">Выбери песню</h2>
+            <h2 id="now-playing-title">Select music</h2>
             <p id="now-playing-artist">My SoundCloud</p>
             <p id="now-playing-album">Local music</p>
         </div>
@@ -150,7 +152,7 @@
         </div>
 
         <div class="player-text">
-            <div id="player-title">Выбери песню</div>
+            <div id="player-title">Select music</div>
             <div id="player-subtitle" class="artist">Local music</div>
         </div>
     </div>
@@ -173,7 +175,7 @@
                 id="play-button"
                 class="media-button play-button"
                 type="button"
-                aria-label="Воспроизвести"
+                aria-label="Play"
             >
                 <svg viewBox="0 0 24 24" class="control-icon" aria-hidden="true">
                     <polygon points="7,4 20,12 7,20"/>
@@ -184,7 +186,7 @@
                 id="next-button"
                 class="media-button"
                 type="button"
-                aria-label="Следующая песня"
+                aria-label="next song"
             >
                 <svg viewBox="0 0 24 24" class="control-icon" aria-hidden="true">
                     <polygon points="5,5 16,12 5,19"/>
@@ -225,7 +227,7 @@
             max="1"
             step="0.01"
             value="1"
-            aria-label="Громкость"
+            aria-label="Sound"
         >
     </div>
 </div>
