@@ -56,7 +56,7 @@ The project architecture has been migrated to an isolated multi-network model to
 **Security Note:** The PostgreSQL database container has no exposed ports (`ports:` block is completely removed). It is physically impossible to access the database from the local area network (LAN), the internet, or even directly from the host system. This setup completely eliminates password-bruteforcing and port-scanning vulnerabilities from external devices on your network.
 
 ## System Maintenance & Garbage Collection
-To completely wipe out stale build caches, dangling intermediate image layers, and stopped containers (reclaiming up to 10 GB of your SSD space), run the ultimate Docker cleanup command:
+*Note: This command will only purge stopped containers and untagged images. Your active running player instance and database will remain completely safe and untouched.*
 ```bash
 docker system prune -a
 ```
