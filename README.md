@@ -47,3 +47,17 @@ Open your browser at: **http://localhost:5000**
 - **View database logs:** `docker compose logs db`
 - **Stop and remove containers smoothly:** `docker compose down`
 
+## Security & Network Architecture (Production-Ready)
+
+The project architecture has been migrated to an isolated multi-network model to secure the infrastructure:
+- **`frontend-net`**: Public-facing virtual network. Contains only the Flask application (`sound_player`), exposing port `5000` to your host machine's browser.
+- **`backend-net`**: Completely isolated internal network. Dedicated exclusively for secure communication between the Flask app and the PostgreSQL database.
+
+**Security Note:** The PostgreSQL database container has no exposed ports (`ports:` block is completely removed). It is physically impossible to access the database from the local area network (LAN), the internet, or even directly from the host system. This setup completely eliminates password-bruteforcing and port-scanning vulnerabilities from external devices on your network.
+
+## System Maintenance & Garbage Collection
+To completely wipe out stale build caches, dangling intermediate image layers, and stopped containers (reclaiming up to 10 GB of your SSD space), run the ultimate Docker cleanup command:
+```bash
+docker system prune -a
+```
+

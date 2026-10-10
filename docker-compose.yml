@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   sound_player:
     build: .
@@ -9,19 +11,31 @@ services:
       - ./covers:/app/covers
     depends_on:
       - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:my_super_secret_password@soundcloud-db:5432/soundcloud_metadata
+    networks:
+      - frontend-net
+      - backend-net
     restart: unless-stopped
 
   db:
     image: postgres:15-alpine
     container_name: soundcloud-db
     environment:
-      POSTGRES_USER: uropbrako
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: my_super_secret_password
       POSTGRES_DB: soundcloud_metadata
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend-net
     restart: unless-stopped
 
 volumes:
   pgdata:
 
+networks:
+  frontend-net:
+    driver: bridge
+  backend-net:
+    driver: bridge

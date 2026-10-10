@@ -15,8 +15,8 @@ def get_db_connection():
     while retries > 0:
         try:
             conn = psycopg2.connect(
-                host='db',
-                user='uropbrako',
+                host='soundcloud-db',
+                user='postgres',
                 password='my_super_secret_password',
                 database='soundcloud_metadata',
                 cursor_factory=RealDictCursor
